@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 14:47:38 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 14:54:05 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	ft_check_param(char *str);
 int	check_valid(char **str, int x, int y);
 int	check_left_view(char *str);
 int	check_right_view(char *str);
-int	check_top_view(char *str);
-int	check_bot_view(char *str);
+int	check_top_view(char **str, int col);
+int	check_bot_view(char **str, int col);
 
 void	ft_putchar(char c)
 {
@@ -159,9 +159,9 @@ int	resolve(char **puzzle, int row, int col)
 			}
 			if (row == 4)
 			{
-				col_view = check_top_view(puzzle[col]);
+				col_view = check_top_view(puzzle, col);
 				if (col_view == 1)
-					col_view = check_bot_view(puzzle[col]);
+					col_view = check_bot_view(puzzle, col);
 			}
 			if (row_view && col_view)
 				if (resolve(puzzle, new_row, new_col))
@@ -198,11 +198,11 @@ int	main(int argc, char **argv)
 		//ft_putchar(check_valid(puzzle, 1, 4) + 48);
 		if (resolve(puzzle, 1, 1))
 			ft_print_tab(puzzle);
-		//else
-		//{
-		//	write(1, "Error\n", 6);
-		//	return (-1);
-		//}
+		else
+		{
+			write(1, "Error\n", 6);
+			return (-1);
+		}
 		free(puzzle);	
 		return (0);
 }

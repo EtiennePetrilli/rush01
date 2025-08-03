@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:03:58 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 14:31:24 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 14:55:43 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int     check_bot_view(char **str, int col)
 		}
 		i--;
 	}
-	if (count != str[0][col] - 48)
+	if (count != str[5][col] - 48)
 		return (0);
         return (1);
 }
