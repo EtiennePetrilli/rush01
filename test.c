@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 14:54:05 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 15:03:05 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,22 +122,20 @@ int	resolve(char **puzzle, int row, int col)
 	int new_row;
 	int new_col;
 	int i;
-	int row_view;
-	int col_view;
+	int row_view[2];
+	int col_view[2];
 
 	i = 1;
-	row_view = 1;
-	col_view = 1;
+	row_view[0] = 1;
+	row_view[1] = 1;
+	col_view[0] = 1;
+	col_view[1] = 1;
 	if (row == 5)
 		return (1);
 	if (col == 4)
-	{
 		new_row = row + 1;
-	}
 	else
-	{
 		new_row = row;
-	}
 	new_col = (col == 3) ? 4 : (col + 1) % 4;
 	//ft_putchar(row + 48);
 	//ft_putchar(' ');
@@ -153,17 +151,15 @@ int	resolve(char **puzzle, int row, int col)
 			//ft_print_tab(puzzle);
 			if (col == 4)
 			{
-				row_view = check_left_view(puzzle[row]);
-				if (row_view == 1)
-					row_view = check_right_view(puzzle[row]);
+				row_view[0] = check_left_view(puzzle[row]);
+				row_view[1] = check_right_view(puzzle[row]);
 			}
 			if (row == 4)
 			{
-				col_view = check_top_view(puzzle, col);
-				if (col_view == 1)
-					col_view = check_bot_view(puzzle, col);
+				col_view[0] = check_top_view(puzzle, col);
+				col_view[1] = check_bot_view(puzzle, col);
 			}
-			if (row_view && col_view)
+			if (row_view[0] && row_view[1] && col_view[0] && col_view[1])
 				if (resolve(puzzle, new_row, new_col))
 					return (1);
 		}
