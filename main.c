@@ -18,6 +18,8 @@ int		ft_check_param(char *str);
 int		resolve(char **puzzle, int row, int column);
 char	**tab_init(char **tab);
 char	**fill_param(char *str, char **tab);
+void	get_next_cell(int row, int col, int *new_row, int *new_col);
+void	ft_init(int *a, int *b, int *c, int *d);
 
 void	ft_putchar(char c)
 {
@@ -38,11 +40,11 @@ void	ft_print_tab(char **tab)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < 6)
+	i = 1;
+	while (i <= 4)
 	{
-		j = 0;
-		while (j < 6)
+		j = 1;
+		while (j <= 4)
 		{
 			ft_putchar(tab[i][j]);
 			if (j != 4)
