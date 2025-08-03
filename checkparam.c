@@ -22,6 +22,47 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
+int	check_digit(char *str, char digit)
+{
+	int	positions[16] = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28,
+			30};
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	while (i < 16)
+	{
+		count = 0;
+		j = 0;
+		while (j < 4)
+		{
+			if (str[positions[i + j]] == digit)
+				count++;
+			j++;
+		}
+		if (count > 1)
+			return (0);
+		i += 4;
+	}
+	return (1);
+}
+
+int	check_valid_char(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] >= '1' && str[i] <= '4') || str[i] == ' ')
+			i++; // caractère valide
+		else
+			return (0);
+	}
+	return (1);
+}
+
 int	check_possible(char *str)
 {
 	int	i;
@@ -55,30 +96,17 @@ int	check_possible(char *str)
 
 int	ft_check_param(char *str)
 {
+	if (!str)
+		return (0);
 	if (ft_strlen(str) != 31)
 		return (0);
 	if (check_possible(str) == 0)
 		return (0);
-	/*
-
-	* Proprietes de la grille :
-
-	*	*
-
-		-On ne peut pas avoir plus de une fois le chiffre 4 ou 1 sur les parametres
-
-	*  Si column1up vaut 4 les autres columnUp ne peuvent pas valoir 4 aussi idem
-
-	*  pour 1;
-
-	*- Un 4 doit etre face a un 1 et vice versa;
-
-	- La string doit faire 31 char en comptant les espace et ne peut comprendre
-
-	que des chiffres entre 1 et 4 inclus
-
-	- Si un 4 est place il doit etre en miroir avec la colones ou la ligne
-
-	* */
+	if (check_valid_char(str) == 0)
+		return (0);
+	if (check_digit(str, '4') == 0)
+		return (0);
+	if (check_digit(str, '1') == 0)
+		return (0);
 	return (1);
 }
