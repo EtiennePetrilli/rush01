@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 13:37:02 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 14:16:26 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,16 +130,19 @@ int	resolve(char **puzzle, int row, int col)
 	col_view = 1;
 	if (row == 5)
 		return (1);
-	if (col == 5)
+	if (col == 4)
 		new_row = row + 1;
 	else
 		new_row = row;
 	new_col = (col + 1) % 4;
+	ft_putchar('a');
 	while (i <= 4)
-	{
+	{	
+		
 		puzzle[row][col] = i + 48;
 		if (check_valid(puzzle, row, col))
 		{
+			ft_print_tab(puzzle);
 			if (col == 4)
 			{
 				row_view = check_left_view(puzzle[row]);
@@ -156,7 +159,7 @@ int	resolve(char **puzzle, int row, int col)
 				if (resolve(puzzle, new_row, new_col))
 					return (1);
 		}
-		puzzle[row][col] = 0 + 48;
+		puzzle[row][col] = '0';
 		i++;
 	}	
 	return (0);
@@ -180,13 +183,18 @@ int	main(int argc, char **argv)
 		}
 		//ft_print_tab(puzzle);
 		puzzle = fill_param(argv[1], puzzle);
+		//puzzle[1][1] = '1';
+		//puzzle[1][2] = '2';
+		//puzzle[1][3] = '3';
+		//puzzle[1][4] = '4';
+		//ft_putchar(check_valid(puzzle, 1, 4) + 48);
 		if (resolve(puzzle, 1, 1))
 			ft_print_tab(puzzle);
-		else
-		{
-			write(1, "Error\n", 6);
-			return (-1);
-		}
+		//else
+		//{
+		//	write(1, "Error\n", 6);
+		//	return (-1);
+		//}
 		free(puzzle);	
 		return (0);
 }
