@@ -6,12 +6,14 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:03:58 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 14:55:43 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 15:13:38 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+
+void	ft_putchar(char c);
 
 int	check_left_view(char *str)
 {
@@ -91,7 +93,7 @@ int     check_bot_view(char **str, int col)
         char    max;
 
         max = '0';
-        i = 5;
+        i = 4;
 	count = 0;
 	while (i >= 1)
 	{

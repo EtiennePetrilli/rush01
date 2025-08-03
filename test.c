@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 15:03:05 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 15:16:14 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,19 @@ void	ft_putstr(char *str)
 void	ft_print_tab(char **tab)
 {
 	int i;
+	int j;
 	
-	i = 0;
-
-	while(i < 6)
+	i = 1;
+	while(i < 5)
 	{
-		ft_putstr(tab[i]);
+		j = 1;
+		while(j < 5)
+		{
+			ft_putchar(tab[i][j]);
+			if (j != 4)
+				ft_putchar(' ');
+			j++;
+		}
 		i++;
 		ft_putchar('\n');
 	}
@@ -187,11 +194,12 @@ int	main(int argc, char **argv)
 		}
 		//ft_print_tab(puzzle);
 		puzzle = fill_param(argv[1], puzzle);
-		//puzzle[1][1] = '1';
-		//puzzle[1][2] = '2';
-		//puzzle[1][3] = '3';
-		//puzzle[1][4] = '4';
-		//ft_putchar(check_valid(puzzle, 1, 4) + 48);
+		puzzle[1][1] = '1';
+		puzzle[2][1] = '2';
+		puzzle[3][1] = '3';
+		puzzle[4][1] = '4';
+		//ft_putchar(check_bot_view(puzzle, 1) + 48);
+		//ft_print_tab(puzzle);
 		if (resolve(puzzle, 1, 1))
 			ft_print_tab(puzzle);
 		else
