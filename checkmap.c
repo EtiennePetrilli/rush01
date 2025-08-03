@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:03:58 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 13:44:39 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 14:31:24 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int     check_top_view(char **str, int col)
 
         max = '0';
         i = 1;
+	count = 0;
         while (i <= 4)
 	{
                	if (str[i][col] > max)
@@ -78,7 +79,7 @@ int     check_top_view(char **str, int col)
                	}
                 i++;
 	}
-	if (count != str[0][col])
+	if (count != str[0][col] - 48)
 		return (0);
 	return (1);
 }
@@ -91,6 +92,7 @@ int     check_bot_view(char **str, int col)
 
         max = '0';
         i = 5;
+	count = 0;
 	while (i >= 1)
 	{
 		if (str[i][col] > max)
@@ -100,7 +102,7 @@ int     check_bot_view(char **str, int col)
 		}
 		i--;
 	}
-	if (count != str[0][col])
+	if (count != str[0][col] - 48)
 		return (0);
         return (1);
 }

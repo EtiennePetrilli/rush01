@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 14:16:26 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 14:40:17 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,18 +131,27 @@ int	resolve(char **puzzle, int row, int col)
 	if (row == 5)
 		return (1);
 	if (col == 4)
+	{
 		new_row = row + 1;
+		new_col = 1;
+	}
 	else
+	{
 		new_row = row;
-	new_col = (col + 1) % 4;
-	ft_putchar('a');
+		new_col = (col + 1) % 4;
+	}
+	//ft_putchar(row + 48);
+	//ft_putchar(' ');
+	//ft_putchar(col + 48);
+	//ft_putchar('\n');
 	while (i <= 4)
 	{	
 		
 		puzzle[row][col] = i + 48;
+		ft_print_tab(puzzle);
 		if (check_valid(puzzle, row, col))
 		{
-			ft_print_tab(puzzle);
+			//ft_print_tab(puzzle);
 			if (col == 4)
 			{
 				row_view = check_left_view(puzzle[row]);
