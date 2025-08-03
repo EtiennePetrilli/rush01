@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   solver.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/03 15:16:14 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 19:18:05 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,30 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int	ft_check_param(char *str);
-int	check_valid(char **str, int x, int y);
-int	check_left_view(char *str);
-int	check_right_view(char *str);
-int	check_top_view(char **str, int col);
-int	check_bot_view(char **str, int col);
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *str)
-{
-	while (*str)
-	{
-		ft_putchar(*str);
-		str++;
-	}
-}
-
-void	ft_print_tab(char **tab)
-{
-	int i;
-	int j;
-	
-	i = 1;
-	while(i < 5)
-	{
-		j = 1;
-		while(j < 5)
-		{
-			ft_putchar(tab[i][j]);
-			if (j != 4)
-				ft_putchar(' ');
-			j++;
-		}
-		i++;
-		ft_putchar('\n');
-	}
-}
+int		check_valid(char **str, int x, int y);
+int		check_left_view(char *str);
+int		check_right_view(char *str);
+int		check_top_view(char **str, int col);
+int		check_bot_view(char **str, int col);
+int		resolve(char **puzzle, int row, int column);
+char	**fill_param_2(char *str, char **tab, int k);
+void	ft_putchar(char c);
+void	ft_print_tab(char **tab);
 
 char	**tab_init(char **tab)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	i = 0;
-	while(i < 6)
+	while (i < 6)
 	{
 		j = 0;
 		tab[i] = malloc(7 * sizeof(char));
-		while(j < 6)
+		while (j < 6)
 		{
-			if ((i == 0 && j == 0 )|| (i == 0 && j == 5) 
-					|| (j == 0 && i == 5) || (j == 5 && i ==5))
+			if ((i == 0 && j == 0) || (i == 0 && j == 5)
+				|| (j == 0 && i == 5) || (j == 5 && i == 5))
 				tab[i][j] = 'x';
 			else
 				tab[i][j] = '0';
@@ -90,7 +58,7 @@ char	**fill_param(char *str, char **tab)
 	i = 0;
 	j = 1;
 	k = 0;
-	while(j <= 4)
+	while (j <= 4)
 	{
 		tab[i][j] = str[k];
 		k = k + 2;
@@ -98,12 +66,21 @@ char	**fill_param(char *str, char **tab)
 	}
 	j = 1;
 	i = 5;
-	while(j <= 4)
+	while (j <= 4)
 	{
 		tab[i][j] = str[k];
 		k = k + 2;
 		j++;
 	}
+	tab = fill_param_2(str, tab, k);
+	return (tab);
+}
+
+char	**fill_param_2(char *str, char **tab, int k)
+{
+	int	i;
+	int	j;
+
 	j = 0;
 	i = 1;
 	while (i <= 4)
@@ -124,38 +101,45 @@ char	**fill_param(char *str, char **tab)
 	return (tab);
 }
 
+void	get_next_cell(int row, int col, int *new_row, int *new_col)
+{
+	if (col == 4)
+		*new_row = row + 1;
+	else
+		*new_row = row;
+	if (col == 3)
+		*new_col = 4;
+	else
+		*new_col = (col + 1) % 4;
+}
+
+void	ft_init(int *a, int *b, int *c, int *d)
+{
+	*a = 0;
+	*b = 0;
+	*c = 0;
+	*d = 0;
+}
+
 int	resolve(char **puzzle, int row, int col)
 {
-	int new_row;
-	int new_col;
-	int i;
-	int row_view[2];
-	int col_view[2];
+	int	row_view[2];
+	int	col_view[2];
+	int	new_row;
+	int	new_col;
+	int	i;
 
-	i = 1;
-	row_view[0] = 1;
-	row_view[1] = 1;
-	col_view[0] = 1;
-	col_view[1] = 1;
 	if (row == 5)
 		return (1);
-	if (col == 4)
-		new_row = row + 1;
-	else
-		new_row = row;
-	new_col = (col == 3) ? 4 : (col + 1) % 4;
-	//ft_putchar(row + 48);
-	//ft_putchar(' ');
-	//ft_putchar(col + 48);
-	//ft_putchar('\n');
+	ft_init(&row_view[0], &row_view[1], &col_view[0], &col_view[1]);
+	get_next_cell(row, col, &new_row, &new_col);
+	printf("new_row = %d, new_col = %d\n", new_row, new_col);
+	i = 1;
 	while (i <= 4)
-	{	
-		
-		puzzle[row][col] = i + 48;
-		//ft_print_tab(puzzle);
+	{
+		puzzle[row][col] = i + '0';
 		if (check_valid(puzzle, row, col))
 		{
-			//ft_print_tab(puzzle);
 			if (col == 4)
 			{
 				row_view[0] = check_left_view(puzzle[row]);
@@ -172,41 +156,50 @@ int	resolve(char **puzzle, int row, int col)
 		}
 		puzzle[row][col] = '0';
 		i++;
-	}	
+	}
 	return (0);
 }
-
-int	main(int argc, char **argv)
+/*
+int	resolve(char **puzzle, int row, int col)
 {
-		char **puzzle;
+	int	new_row;
+	int	new_col;
+	int	i;
+	int	row_view[2];
+	int	col_view[2];
 
-		puzzle = malloc(6 * sizeof(char *));
-		puzzle = tab_init(puzzle);
-		if (argc != 2)
+	i = 0;
+	row_view[0] = 1;
+	row_view[1] = 1;
+	col_view[0] = 1;
+	col_view[1] = 1;
+	if (row == 5)
+		return (1);
+	if (col == 4)
+		new_row = row + 1;
+	else
+		new_row = row;
+	new_col = (col == 3) ? 4 : (col + 1) % 4;
+	while (++i <= 4)
+	{
+		puzzle[row][col] = i + 48;
+		if (check_valid(puzzle, row, col))
 		{
-			write(1, "Error\n", 6);
-			return (-1);
+			if (col == 4)
+			{
+				row_view[0] = check_left_view(puzzle[row]);
+				row_view[1] = check_right_view(puzzle[row]);
+			}
+			if (row == 4)
+			{
+				col_view[0] = check_top_view(puzzle, col);
+				col_view[1] = check_bot_view(puzzle, col);
+			}
+			if (row_view[0] && row_view[1] && col_view[0] && col_view[1])
+				if (resolve(puzzle, new_row, new_col))
+					return (1);
 		}
-		if (ft_check_param(argv[1]) == 0)
-		{
-			write(1, "Error\n", 6);
-			return (-1);
-		}
-		//ft_print_tab(puzzle);
-		puzzle = fill_param(argv[1], puzzle);
-		puzzle[1][1] = '1';
-		puzzle[2][1] = '2';
-		puzzle[3][1] = '3';
-		puzzle[4][1] = '4';
-		//ft_putchar(check_bot_view(puzzle, 1) + 48);
-		//ft_print_tab(puzzle);
-		if (resolve(puzzle, 1, 1))
-			ft_print_tab(puzzle);
-		else
-		{
-			write(1, "Error\n", 6);
-			return (-1);
-		}
-		free(puzzle);	
-		return (0);
-}
+		puzzle[row][col] = '0';
+	}
+	return (0);
+}*/

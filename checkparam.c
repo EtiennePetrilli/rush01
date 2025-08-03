@@ -6,9 +6,11 @@
 /*   By: yasmine.aichi <yasmine.aichi@learner.42.t  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:53:04 by yasmine.aichi     #+#    #+#             */
-/*   Updated: 2025/08/02 20:36:18 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 17:55:42 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+void	ft_putchar(char c);
 
 int	ft_strlen(char *str)
 {
@@ -24,23 +26,25 @@ int	ft_strlen(char *str)
 
 int	check_digit(char *str, char digit)
 {
-	int	positions[16] = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28,
-			30};
+	int	positions[16];
 	int	i;
 	int	j;
 	int	count;
 
 	i = 0;
+	while (i < 32)
+	{
+		positions[i / 2] = i;
+		i += 2;
+	}
+	i = 0;
 	while (i < 16)
 	{
 		count = 0;
-		j = 0;
-		while (j < 4)
-		{
+		j = -1;
+		while (j++ < 3)
 			if (str[positions[i + j]] == digit)
 				count++;
-			j++;
-		}
 		if (count > 1)
 			return (0);
 		i += 4;
@@ -56,7 +60,7 @@ int	check_valid_char(char *str)
 	while (str[i])
 	{
 		if ((str[i] >= '1' && str[i] <= '4') || str[i] == ' ')
-			i++; // caractère valide
+			i++;
 		else
 			return (0);
 	}
@@ -70,7 +74,6 @@ int	check_possible(char *str)
 	int	sum2;
 
 	i = 0;
-	// colonnes
 	while (i <= 6)
 	{
 		sum1 = (str[i] - '0') + (str[i + 8] - '0');
@@ -81,7 +84,6 @@ int	check_possible(char *str)
 		i += 2;
 	}
 	i = 16;
-	// Lignes
 	while (i <= 22)
 	{
 		sum2 = (str[i] - '0') + (str[i + 8] - '0');
