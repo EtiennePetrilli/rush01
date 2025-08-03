@@ -6,7 +6,7 @@
 /*   By: etienne.petrilli <etienne.petrilli@learne  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:20:27 by etienne.petri     #+#    #+#             */
-/*   Updated: 2025/08/02 20:51:38 by etienne.petri    ###   ########.fr       */
+/*   Updated: 2025/08/03 13:37:02 by etienne.petri    ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include <stdio.h>
 
 int	ft_check_param(char *str);
+int	check_valid(char **str, int x, int y);
+int	check_left_view(char *str);
+int	check_right_view(char *str);
+int	check_top_view(char *str);
+int	check_bot_view(char *str);
 
 void	ft_putchar(char c)
 {
@@ -81,15 +86,6 @@ char	**fill_param(char *str, char **tab)
 	while(j <= 4)
 	{
 		tab[i][j] = str[k];
-		if (tab[i][j] == '4')
-		{
-			tab[i + 1][j] = '1';
-			tab[i + 2][j] = '2';
-			tab[i + 3][j] = '3';
-			tab[i + 4][j] = '4';
-		}
-		else if (tab[i][j] == '1')
-			tab[i + 1][j] = '4';
 		k = k + 2;
 		j++;
 	}
@@ -98,16 +94,6 @@ char	**fill_param(char *str, char **tab)
 	while(j <= 4)
 	{
 		tab[i][j] = str[k];
-                if (tab[i][j] == '4')
-                {
-                        tab[i - 1][j] = '1';
-                        tab[i - 2][j] = '2';
-                        tab[i - 3][j] = '3';
-                        tab[i - 4][j] = '4';
-                }
-                else if (tab[i][j] == '1')
-                        tab[i - 1][j] = '4';
-
 		k = k + 2;
 		j++;
 	}
@@ -116,16 +102,6 @@ char	**fill_param(char *str, char **tab)
 	while (i <= 4)
 	{
 		tab[i][j] = str[k];
-                if (tab[i][j] == '4')
-                {
-                        tab[i][j + 1] = '1';
-                        tab[i][j + 2] = '2';
-                        tab[i][j + 3] = '3';
-                        tab[i][j + 4] = '4';
-                }
-                else if (tab[i][j] == '1')
-                        tab[i][j + 1] = '4';
-
 		k = k + 2;
 		i++;
 	}
@@ -134,15 +110,6 @@ char	**fill_param(char *str, char **tab)
 	while (i <= 4)
 	{
 		tab[i][j] = str[k];
-		if (tab[i][j] == '4')
-                {
-                        tab[i][j - 1] = '1';
-                        tab[i][j - 2] = '2';
-                        tab[i][j - 3] = '3';
-                        tab[i][j - 4] = '4';
-                }
-                else if (tab[i][j] == '1')
-                        tab[i + 1][j] = '4';
 		if (k < 30)
 			k += 2;
 		i++;
@@ -150,25 +117,49 @@ char	**fill_param(char *str, char **tab)
 	return (tab);
 }
 
-char	**resolve1(char **puzzle)
+int	resolve(char **puzzle, int row, int col)
 {
-	int	i;
-	int	j;
+	int new_row;
+	int new_col;
+	int i;
+	int row_view;
+	int col_view;
 
-	i = 0;
-	j = 0;
-	while (puzzle[i][j])
+	i = 1;
+	row_view = 1;
+	col_view = 1;
+	if (row == 5)
+		return (1);
+	if (col == 5)
+		new_row = row + 1;
+	else
+		new_row = row;
+	new_col = (col + 1) % 4;
+	while (i <= 4)
 	{
-		if (puzzle[i][j] == '4' && i == 0)
+		puzzle[row][col] = i + 48;
+		if (check_valid(puzzle, row, col))
 		{
-			puzzle[i + 1][j] = '1';
-			puzzle[i + 2][j] = '2';
-			puzzle[i + 3][j] = '3';
-			puzzle[i + 4][j] = '4';
+			if (col == 4)
+			{
+				row_view = check_left_view(puzzle[row]);
+				if (row_view == 1)
+					row_view = check_right_view(puzzle[row]);
+			}
+			if (row == 4)
+			{
+				col_view = check_top_view(puzzle[col]);
+				if (col_view == 1)
+					col_view = check_bot_view(puzzle[col]);
+			}
+			if (row_view && col_view)
+				if (resolve(puzzle, new_row, new_col))
+					return (1);
 		}
-		j++;
-	}
-	return (puzzle);
+		puzzle[row][col] = 0 + 48;
+		i++;
+	}	
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -187,11 +178,15 @@ int	main(int argc, char **argv)
 			write(1, "Error\n", 6);
 			return (-1);
 		}
-		ft_print_tab(puzzle);
+		//ft_print_tab(puzzle);
 		puzzle = fill_param(argv[1], puzzle);
-		puzzle = resolve1(puzzle);
-		ft_print_tab(puzzle);
+		if (resolve(puzzle, 1, 1))
+			ft_print_tab(puzzle);
+		else
+		{
+			write(1, "Error\n", 6);
+			return (-1);
+		}
 		free(puzzle);	
-
 		return (0);
 }
